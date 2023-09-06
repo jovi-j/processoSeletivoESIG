@@ -35,7 +35,7 @@ public class PessoaSalario {
 	private Long id;
 	
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
 	

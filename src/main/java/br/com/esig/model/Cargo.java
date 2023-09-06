@@ -1,4 +1,6 @@
 package br.com.esig.model;
+import java.io.Serializable;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.Entity;
@@ -11,9 +13,13 @@ import javax.persistence.Table;
 @Table(name = "cargo")
 @SessionScoped
 @ManagedBean
-public class Cargo {
+public class Cargo implements Serializable {
+	
+	public Cargo() {
+	}
 	
 	
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

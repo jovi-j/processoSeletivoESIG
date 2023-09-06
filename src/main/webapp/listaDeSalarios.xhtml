@@ -1,41 +1,54 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3c.org/1999/xhtml"
-	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
-
-<h:head>
-
-</h:head>
-
 <h:body>
-	<p:growl id="messageOutput" showDetail="true" />
-	<p:panel header="Listagem de Salarios"
-		style="text-align: center; font-size: 13px">
-		<h:form id="salariosForm">
-			<p:commandButton value="Recalcular Salarios"
-				actionListener="#{salariosMBean.calcularSalarios}"
-				update="salariosForm" process="@this" 
-				onstart="PF('salBtn').disable()" oncomplete="PF('salBtn').enable()" widgetVar="salBtn" />
-				
-			<p:dataTable value="#{salariosMBean.pessoasSalarios}" var="p" rows="15"
-				stripedRows="true" paginator="true" paginatorPosition="bottom"
-				liveResize="true" draggableColumns="true" resizableColumns="true"
-				style="font-size: 15px">
+
+	<ui:composition template="/ui/layout.xhtml">
+
+		<ui:define name="content">
+
+			<p:growl id="messageOutput" showDetail="true" />
+			<p:panel header="Listagem de Salarios"
+				style="text-align: center; font-size: 13px">
+				<h:form id="salariosForm">
+					<p:commandButton value="Recalcular Salarios"
+						actionListener="#{salariosMBean.calcularSalarios}"
+						update="salariosForm" process="@this"
+						onclick="btnChangeValue"
+						oncomplete="PF('salBtn').enable()" widgetVar="salBtn"  style="margin-bottom:8px;" id="salBtn"/>
+
+					<p:dataTable value="#{salariosMBean.pessoasSalarios}" var="p"
+						rows="15" stripedRows="true" paginator="true"
+						paginatorPosition="bottom" liveResize="true"
+						draggableColumns="true" resizableColumns="true"
+						style="font-size: 15px">
 
 
-				<p:column headerText="Nome" style="text-align: center">
-					<h:outputText value="#{p.nome}" />
-				</p:column>
+						<p:column headerText="Nome" style="text-align: center">
+							<h:outputText value="#{p.nome}" />
+						</p:column>
 
-				<p:column headerText="Salario" style="text-align: center">
-					<h:outputText value="#{p.salario}">
-						<f:convertNumber currencyCode="BRL" type="currency" />
-					</h:outputText>
-				</p:column>
-			</p:dataTable>
-		</h:form>
-	</p:panel>
+						<p:column headerText="Salario" style="text-align: center">
+							<h:outputText value="#{p.salario}">
+								<f:convertNumber currencyCode="BRL" type="currency" />
+							</h:outputText>
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</p:panel>
+		</ui:define>
+		<script>
+		function btnChangeValue(){
+			const btn = document.getElementById("salBtn");
+			btn.innerHTML = "Recalculando, aguarde...";
+			PF('salBtn').disable();
+		}
+		</script>
+	</ui:composition>
+
 </h:body>
 
 </html>

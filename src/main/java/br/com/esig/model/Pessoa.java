@@ -1,6 +1,7 @@
 package br.com.esig.model;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.persistence.Table;
@@ -21,8 +23,12 @@ import javax.persistence.Table;
 @Table(name = "pessoa")
 @SessionScoped
 @ManagedBean
-public class Pessoa {
+public class Pessoa implements Serializable{
+	
+	public Pessoa() {
+	}
 
+	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -39,9 +45,12 @@ public class Pessoa {
 	@Column(name = "data_nascimento")
 	private Date dataNascimento;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToOne
 	@JoinColumn(name = "cargo_id")
 	private Cargo cargo;
+	
+	@Transient
+	private Long cargoId;
 
 	public Long getId() {
 		return id;
@@ -115,11 +124,11 @@ public class Pessoa {
 		this.telefone = telefone;
 	}
 
-	public Date getData_nascimento() {
+	public Date getDataNascimento() {
 		return dataNascimento;
 	}
 
-	public void setData_nascimento(Date data_nascimento) {
+	public void setDataNascimento(Date data_nascimento) {
 		this.dataNascimento = data_nascimento;
 	}
 
@@ -130,4 +139,14 @@ public class Pessoa {
 	public void setCargo(Cargo cargo) {
 		this.cargo = cargo;
 	}
+
+	public Long getCargoId() {
+		return cargoId;
+	}
+
+	public void setCargoId(Long cargoId) {
+		this.cargoId = cargoId;
+	}
+	
+	
 }

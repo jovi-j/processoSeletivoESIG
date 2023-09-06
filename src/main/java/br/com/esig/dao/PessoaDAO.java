@@ -17,4 +17,22 @@ public class PessoaDAO {
 		em.close();
 		return pessoas;
 	}
+
+	public void salvarPessoa(Pessoa pessoa) {
+		EntityManager em = EMUtil.getEntityManager();
+		try {
+			em.getTransaction().begin();
+			if(pessoa.getCargo() == null && pessoa.getCargoId() != null) {
+				CargoDAO cDAO = new CargoDAO();
+				pessoa.setCargo(cDAO.findById(pessoa.getCargoId()));
+			}
+			if (pessoa.getId() == null) {
+				em.persist(pessoa);
+			}
+			pessoa = em.merge(pessoa);
+			em.getTransaction().commit();
+		}finally {
+			em.close();
+		}
+	}
 }

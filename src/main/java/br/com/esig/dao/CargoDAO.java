@@ -1,7 +1,10 @@
 package br.com.esig.dao;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import br.com.esig.model.Cargo;
 import br.com.esig.util.EMUtil;
@@ -28,6 +31,32 @@ public class CargoDAO {
 			em.close();
 		}
 		return salario;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Cargo> buscarTodosCargos() {
+		EntityManager em = EMUtil.getEntityManager();
+		List<Cargo> cargos = null;
+		try {
+			Query cQuery = em.createQuery("from Cargo c");
+			cargos = cQuery.getResultList();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally {
+			em.close();
+		}
+		return cargos;
+	}
+
+	public Cargo findById(Long cargoId) {
+		EntityManager em = EMUtil.getEntityManager();
+		TypedQuery<Cargo> cQuery = em.createQuery("select c from Cargo c where c.id = :id", Cargo.class);
+		cQuery.setParameter("id", cargoId);
+		Cargo cargo = cQuery.getSingleResult();
+		em.close();
+		return cargo;
 	}
 	
 	

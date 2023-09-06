@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="/ui/layout.xhtml">
+	<ui:define name="content">
+		<h:form id="pessoaForm">
+			<h:panelGrid columns="2">
+				<h:outputLabel for="nome">Nome:</h:outputLabel>
+				<h:inputText id="nome" value="#{pessoaMBean.pessoa.nome}" />
+
+				<h:outputLabel for="cidade">Cidade:</h:outputLabel>
+				<h:inputText id="cidade" value="#{pessoaMBean.pessoa.cidade}" />
+
+				<h:outputLabel for="email">E-mail:</h:outputLabel>
+				<h:inputText id="email" value="#{pessoaMBean.pessoa.email}" />
+
+				<h:outputLabel for="cep">CEP:</h:outputLabel>
+				<h:inputText id="cep" value="#{pessoaMBean.pessoa.cep}" />
+
+				<h:outputLabel for="endereco">Endereço:</h:outputLabel>
+				<h:inputText id="endereco" value="#{pessoaMBean.pessoa.endereco}" />
+
+				<h:outputLabel for="pais">País:</h:outputLabel>
+				<h:inputText id="pais" value="#{pessoaMBean.pessoa.pais}" />
+
+				<h:outputLabel for="usuario">Usuário:</h:outputLabel>
+				<h:inputText id="usuario" value="#{pessoaMBean.pessoa.usuario}" />
+
+				<h:outputLabel for="telefone">Telefone:</h:outputLabel>
+				<h:inputText id="telefone" value="#{pessoaMBean.pessoa.telefone}" />
+
+				<h:outputLabel for="dataNascimento">Data de Nascimento:</h:outputLabel>
+				<h:inputText id="dataNascimento" value="#{pessoaMBean.pessoa.dataNascimento}">
+				  <f:convertDateTime pattern="dd/MM/yyyy"/>  
+				</h:inputText>
+
+				<h:outputLabel for="cargo">Cargo:</h:outputLabel>
+				<h:selectOneMenu id="cargo" value="#{pessoaMBean.pessoa.cargoId}">
+					<f:selectItems value="#{pessoaMBean.cargos}"
+						var="cargo" itemLabel="#{cargo.nome}" itemValue="#{cargo.id}" />
+				</h:selectOneMenu>
+			</h:panelGrid>
+
+			<h:commandButton action="#{pessoaMBean.salvarPessoa}" value="Salvar" />
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>

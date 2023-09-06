@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:f="http">
+<body>
+	<ui:composition>
+		<p:menubar>
+			<p:menuitem value="ProtoRH" url="/index.xhtml" />
+			<p:submenu label="Pessoas">
+				<p:menuitem value="Cadastrar Pessoa" url="/cadastrarPessoa.xhtml" />
+			</p:submenu>
+			<p:submenu label="Salários">
+				<p:menuitem value="Listar Salários" url="/listaDeSalarios.xhtml" />
+			</p:submenu>
+		</p:menubar>
+	</ui:composition>
+</body>
+</html>
