@@ -15,7 +15,7 @@ Para iniciar o projeto, é necessário ter o JDK 8, Eclipse, e o Apache Tomcat 8
 2. Crie um novo servidor Apache Tomcat 8.5
 3. Adicione o projeto ao servidor clicando com o botão direito no servidor > Add or Remove... e adicione o projeto a lista de recursos
 4. Inicie o projeto clicando no botão de iniciar projeto, na janela de servidores
-5. Acesse o [localhost](http://localhost:8080/projetoEsig/listaDeSalarios.xhtml)
+5. Acesse o [localhost](http://localhost:8080/projeto/listaDeSalarios.xhtml)
 
 ## Tecnologias Usadas
 - JDK 1.8 (Java 8)
