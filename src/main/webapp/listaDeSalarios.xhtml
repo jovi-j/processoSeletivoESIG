@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+
+</h:head>
+
+<h:body>
+	<p:panel header="Listagem de Salarios"
+		style="text-align: center; font-size: 13px">
+		<h:form id="salariosForm">
+			<p:commandButton value="Recalcular Salarios"
+				actionListener="#{pessoaMBean.calcularSalarios}"
+				update="salariosForm" process="@this" 
+				onstart="PF('salBtn').disable()" oncomplete="PF('salBtn').enable()" widgetVar="salBtn" />
+				
+			<p:dataTable value="#{pessoaMBean.pessoasSalarios}" var="p" rows="15"
+				stripedRows="true" paginator="true" paginatorPosition="bottom"
+				liveResize="true" draggableColumns="true" resizableColumns="true"
+				style="font-size: 15px">
+
+
+				<p:column headerText="Nome" style="text-align: center">
+					<h:outputText value="#{p.nome}" />
+				</p:column>
+
+				<p:column headerText="Salario" style="text-align: center">
+					<h:outputText value="#{p.salario}">
+						<f:convertNumber currencyCode="BRL" type="currency" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</p:panel>
+</h:body>
+
+</html>
