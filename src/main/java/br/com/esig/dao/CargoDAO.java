@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import br.com.esig.model.Cargo;
+import br.com.esig.util.EMUtil;
 
 public class CargoDAO {
 

@@ -1,4 +1,4 @@
-package br.com.esig.dao;
+package br.com.esig.util;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

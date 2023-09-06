@@ -3,6 +3,7 @@ import br.com.esig.dao.PessoaDAO;
 import br.com.esig.dao.PessoaSalarioDAO;
 import br.com.esig.model.Pessoa;
 import br.com.esig.model.PessoaSalario;
+import br.com.esig.util.FacesUtil;
 
 import java.io.Serializable;
 import java.util.List;
@@ -11,10 +12,11 @@ import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class SalariosMBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -34,12 +36,13 @@ public class SalariosMBean implements Serializable{
 		PessoaDAO pDAO = new PessoaDAO();
 		List<Pessoa> pessoas = pDAO.buscarTodasPessoas();
 		if(pessoas.isEmpty()) {
-			enviarMensagem("Erro de Pessoas", "Não há pessoas cadastradas no sistema.", FacesMessage.SEVERITY_ERROR);
+			FacesUtil.enviarMensagem("Erro de Pessoas", "Não há pessoas cadastradas no sistema.", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
 			return null;
 		}
 		
 		psDAO.updateSalarios(pessoasSalarios, pessoas);
-		return "listaDeSalarios";
+		FacesUtil.enviarMensagem("Recalculo de Salários Completo", "O recálculo de salários foi feito com sucesso!", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+		return null;
 		
 	}
 
@@ -107,17 +110,6 @@ public class SalariosMBean implements Serializable{
 	}
 	
 	// Função simples para pegar um único parâmetro vindo da requisição
-	public String getParam(String param) {
-		FacesContext fc = FacesContext.getCurrentInstance();
-		Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
-		return params.get(param);
-	}
-	
-	public void enviarMensagem(String mensagemResumida, String mensagemInteira, FacesMessage.Severity severidade) {
-		FacesMessage fm = new FacesMessage(severidade, mensagemResumida, mensagemInteira);
-		FacesContext ctx = FacesContext.getCurrentInstance();
-		ctx.addMessage("messageOutput", fm);
-	}
 	
 
 

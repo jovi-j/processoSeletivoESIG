@@ -7,6 +7,7 @@ import javax.persistence.TypedQuery;
 
 import br.com.esig.model.Pessoa;
 import br.com.esig.model.PessoaSalario;
+import br.com.esig.util.EMUtil;
 
 public class PessoaSalarioDAO {
 
@@ -27,6 +28,7 @@ public class PessoaSalarioDAO {
 					em.persist(ps);
 					psList.add(ps);
 				}
+				em.getTransaction().commit();
 				em.close();
 				return;
 			}
@@ -40,6 +42,7 @@ public class PessoaSalarioDAO {
 			}
 		}
 		finally {
+			em.getTransaction().commit();
 			em.close();
 		}
 
@@ -47,7 +50,7 @@ public class PessoaSalarioDAO {
 
 	public List<PessoaSalario> buscarTodasPessoasSalario() {
 		EntityManager em = EMUtil.getEntityManager();
-		TypedQuery<PessoaSalario> pessoaSalQuery = em.createQuery("select ps from PessoaSalario ps",
+		TypedQuery<PessoaSalario> pessoaSalQuery = em.createQuery("from PessoaSalario ps",
 				PessoaSalario.class);
 		List<PessoaSalario> psList = pessoaSalQuery.getResultList();
 		em.close();
