@@ -15,33 +15,31 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @SessionScoped
-public class PessoaMBean implements Serializable{
+public class SalariosMBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-	private List<Pessoa> pessoas;
 	private List<PessoaSalario> pessoasSalarios;
-	private boolean calculandoSalarios = false;
 	
-	private Pessoa pessoa;
 
 	// Propriedades para a busca
 	private Long id;
 
-	public PessoaMBean() {
-		this.pessoa = new Pessoa();
-		buscarTodasAsPessoas();
+	public SalariosMBean() {
+		buscarTodosOsSalarios();
 	}
 	
 	public String calcularSalarios() {
-		calculandoSalarios = true;
 		PessoaSalarioDAO psDAO = new PessoaSalarioDAO();
-		if(pessoas.isEmpty()) 
+		PessoaDAO pDAO = new PessoaDAO();
+		List<Pessoa> pessoas = pDAO.buscarTodasPessoas();
+		if(pessoas.isEmpty()) {
+			enviarMensagem("Erro de Pessoas", "Não há pessoas cadastradas no sistema.", FacesMessage.SEVERITY_ERROR);
 			return null;
+		}
 		
 		psDAO.updateSalarios(pessoasSalarios, pessoas);
-		calculandoSalarios = false;
-		return "listaDePessoas";
+		return "listaDeSalarios";
 		
 	}
 
@@ -103,10 +101,8 @@ public class PessoaMBean implements Serializable{
 //		return "listaDeTarefas";
 //	}
 
-	public void buscarTodasAsPessoas(){
-		PessoaDAO pDAO = new PessoaDAO();
+	public void buscarTodosOsSalarios(){
 		PessoaSalarioDAO psDAO = new PessoaSalarioDAO();
-		this.pessoas = pDAO.buscarTodasPessoas();
 		this.pessoasSalarios = psDAO.buscarTodasPessoasSalario();
 	}
 	
@@ -123,21 +119,7 @@ public class PessoaMBean implements Serializable{
 		ctx.addMessage("messageOutput", fm);
 	}
 	
-	public Pessoa getPessoa() {
-		return pessoa;
-	}
 
-	public void setPessoa(Pessoa pessoa) {
-		this.pessoa = pessoa;
-	}
-
-	public List<Pessoa> getPessoas() {
-		return pessoas;
-	}
-
-	public void setPessoas(List<Pessoa> pessoas) {
-		this.pessoas = pessoas;
-	}
 
 	public Long getId() {
 		return id;
@@ -153,10 +135,6 @@ public class PessoaMBean implements Serializable{
 
 	public void setPessoasSalarios(List<PessoaSalario> pessoasSalarios) {
 		this.pessoasSalarios = pessoasSalarios;
-	}
-
-	public boolean isCalculandoSalarios() {
-		return calculandoSalarios;
 	}
 
 }

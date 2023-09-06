@@ -5,7 +5,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import br.com.esig.controller.EMUtil;
 import br.com.esig.model.Pessoa;
 
 public class PessoaDAO {

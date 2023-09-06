@@ -13,11 +13,11 @@
 		style="text-align: center; font-size: 13px">
 		<h:form id="salariosForm">
 			<p:commandButton value="Recalcular Salarios"
-				actionListener="#{pessoaMBean.calcularSalarios}"
+				actionListener="#{salariosMBean.calcularSalarios}"
 				update="salariosForm" process="@this" 
 				onstart="PF('salBtn').disable()" oncomplete="PF('salBtn').enable()" widgetVar="salBtn" />
 				
-			<p:dataTable value="#{pessoaMBean.pessoasSalarios}" var="p" rows="15"
+			<p:dataTable value="#{salariosMBean.pessoasSalarios}" var="p" rows="15"
 				stripedRows="true" paginator="true" paginatorPosition="bottom"
 				liveResize="true" draggableColumns="true" resizableColumns="true"
 				style="font-size: 15px">
