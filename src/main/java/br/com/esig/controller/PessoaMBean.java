@@ -23,7 +23,6 @@ public class PessoaMBean implements Serializable {
 	
 	public PessoaMBean() {
 		this.pessoa = new Pessoa();
-		this.pessoa.setCargo(new Cargo());
 		CargoDAO cDAO = new CargoDAO();
 		this.setCargos(cDAO.buscarTodosCargos());
 	}

@@ -11,47 +11,67 @@ import br.com.esig.util.EMUtil;
 
 public class PessoaSalarioDAO {
 
-	public void updateSalarios(List<PessoaSalario> psList, List<Pessoa> pessoas) {
+	public void updateSalarios() {
 		EntityManager em = EMUtil.getEntityManager();
-		em.getTransaction().begin();
-		CargoDAO cDAO = new CargoDAO();
 		try {
-			if (psList.isEmpty()) {
-				for (Pessoa p : pessoas) {
-					PessoaSalario ps;
-					if (p.getCargo() == null) {
-						ps = new PessoaSalario(p);
-					} else {
-						ps = new PessoaSalario(p, cDAO.getSalarioByCargo(p.getCargo()));
-					}
-					ps = em.merge(ps);
-					em.persist(ps);
-					psList.add(ps);
-				}
-				em.getTransaction().commit();
-				em.close();
-				return;
-			}
+			em.getTransaction().begin();
+			String hql = "SELECT p, SUM(cv.vencimento.valor) FROM Pessoa p "
+					+ "JOIN CargoVencimento cv ON p.cargo = cv.cargo GROUP BY p";
 
-			for (PessoaSalario ps : psList) {
-				if (ps.getPessoa().getCargo() != null) {
-					ps.setSalario(cDAO.getSalarioByCargo(ps.getPessoa().getCargo()));
-					ps = em.merge(ps);
-					em.persist(ps);
+			TypedQuery<Object[]> query = em.createQuery(hql, Object[].class);
+			List<Object[]> resultList = query.getResultList();
+
+			for (Object[] resultado : resultList) {
+				Pessoa p = (Pessoa) resultado[0];
+				Double salCalc = (Double) resultado[1];
+				PessoaSalario existingSalario = getExistingPessoaSalario(p);
+
+				if (existingSalario == null || !existingSalario.getSalario().equals(salCalc)) {
+					PessoaSalario pessoaSalario = new PessoaSalario();
+					pessoaSalario.setPessoa(p);
+					pessoaSalario.setNome(p.getNome());
+					pessoaSalario.setSalario(salCalc);
+					em.merge(pessoaSalario);
 				}
 			}
-		}
-		finally {
+			
+			removeOldSalarios();
+			
 			em.getTransaction().commit();
+		} finally {
 			em.close();
 		}
-
 	}
+
+	private PessoaSalario getExistingPessoaSalario(Pessoa pessoa) {
+		EntityManager em = EMUtil.getEntityManager();
+		String hql = "SELECT ps FROM PessoaSalario ps WHERE ps.pessoa = :pessoa";
+		TypedQuery<PessoaSalario> query = em.createQuery(hql, PessoaSalario.class);
+		query.setParameter("pessoa", pessoa);
+		PessoaSalario ps = new PessoaSalario();
+		try {
+			ps = query.getSingleResult();
+		} catch (Exception e) {
+			ps = null;
+		} finally {
+			em.close();
+		}
+		return ps;
+	}
+	
+	private void removeOldSalarios() {
+		EntityManager em = EMUtil.getEntityManager();
+		em.getTransaction().begin();
+        String hql = "DELETE FROM PessoaSalario ps WHERE ps.pessoa NOT IN " +
+                      "(SELECT p FROM Pessoa p JOIN CargoVencimento cv ON p.cargo = cv.cargo)";
+        em.createQuery(hql).executeUpdate();
+        em.getTransaction().commit();
+        em.close();
+    }
 
 	public List<PessoaSalario> buscarTodasPessoasSalario() {
 		EntityManager em = EMUtil.getEntityManager();
-		TypedQuery<PessoaSalario> pessoaSalQuery = em.createQuery("from PessoaSalario ps",
-				PessoaSalario.class);
+		TypedQuery<PessoaSalario> pessoaSalQuery = em.createQuery("from PessoaSalario ps", PessoaSalario.class);
 		List<PessoaSalario> psList = pessoaSalQuery.getResultList();
 		em.close();
 		return psList;

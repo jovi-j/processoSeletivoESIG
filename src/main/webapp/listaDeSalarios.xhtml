@@ -24,10 +24,11 @@
 						rows="15" stripedRows="true" paginator="true"
 						paginatorPosition="bottom" liveResize="true"
 						draggableColumns="true" resizableColumns="true"
+						emptyMessage="Não há salários calculados."
+						filteredValue="#{salariosMBean.pessoasSalariosFiltrados}"
 						style="font-size: 15px">
 
-
-						<p:column headerText="Nome" style="text-align: center">
+						<p:column filterBy="#{p.nome}" headerText="Nome" style="text-align: center" filterMatchMode="contains">
 							<h:outputText value="#{p.nome}" />
 						</p:column>
 

@@ -35,7 +35,7 @@ public class PessoaSalario {
 	private Long id;
 	
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "pessoa_id")
 	private Pessoa pessoa;
 	

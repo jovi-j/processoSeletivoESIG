@@ -22,7 +22,7 @@ public class PessoaDAO {
 		EntityManager em = EMUtil.getEntityManager();
 		try {
 			em.getTransaction().begin();
-			if(pessoa.getCargo() == null && pessoa.getCargoId() != null) {
+			if((pessoa.getCargo() == null || pessoa.getCargo().getId() == null) && pessoa.getCargoId() != null) {
 				CargoDAO cDAO = new CargoDAO();
 				pessoa.setCargo(cDAO.findById(pessoa.getCargoId()));
 			}

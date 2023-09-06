@@ -11,15 +11,17 @@ import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class SalariosMBean implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
 	private List<PessoaSalario> pessoasSalarios;
+	private List<PessoaSalario> pessoasSalariosFiltrados;
 	
 
 	// Propriedades para a busca
@@ -31,19 +33,12 @@ public class SalariosMBean implements Serializable{
 	
 	public String calcularSalarios() {
 		PessoaSalarioDAO psDAO = new PessoaSalarioDAO();
-		PessoaDAO pDAO = new PessoaDAO();
-		List<Pessoa> pessoas = pDAO.buscarTodasPessoas();
-		if(pessoas.isEmpty()) {
-			FacesUtil.enviarMensagem("Erro de Pessoas", "Não há pessoas cadastradas no sistema.", FacesMessage.SEVERITY_ERROR, FacesContext.getCurrentInstance());
-			return null;
-		}
-		
-		psDAO.updateSalarios(pessoasSalarios, pessoas);
+		psDAO.updateSalarios();
 		FacesUtil.enviarMensagem("Recalculo de Salários Completo", "O recálculo de salários foi feito com sucesso!", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+		buscarTodosOsSalarios();
 		return null;
-		
 	}
-
+	
 //	public String adicionarPessoa(){
 //		em.getTransaction().begin();
 //		this.pessoa = em.merge(this.pessoa);
@@ -125,6 +120,14 @@ public class SalariosMBean implements Serializable{
 
 	public void setPessoasSalarios(List<PessoaSalario> pessoasSalarios) {
 		this.pessoasSalarios = pessoasSalarios;
+	}
+
+	public List<PessoaSalario> getPessoasSalariosFiltrados() {
+		return pessoasSalariosFiltrados;
+	}
+
+	public void setPessoasSalariosFiltrados(List<PessoaSalario> pessoasSalariosFiltrados) {
+		this.pessoasSalariosFiltrados = pessoasSalariosFiltrados;
 	}
 
 }

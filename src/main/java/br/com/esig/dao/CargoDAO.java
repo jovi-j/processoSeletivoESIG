@@ -10,7 +10,7 @@ import br.com.esig.model.Cargo;
 import br.com.esig.util.EMUtil;
 
 public class CargoDAO {
-
+	
 	
 	public Double getSalarioByCargo(Cargo cargo) {
 		EntityManager em = EMUtil.getEntityManager();
