@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+
+	<ui:composition template="/ui/layout.xhtml">
+
+		<ui:define name="content">
+
+			<p:growl id="messageOutput" showDetail="true" />
+			<p:panel header="Deletar Pessoas"
+				style="text-align: center; font-size: 13px">
+				<h:form>
+					<p:inputText id="buscaInput" value="#{pessoaMBean.buscaNomeOuUsuario}"
+						placeholder="Busca por nome ou usuario" />
+					<p:commandButton value="Buscar"
+						action="#{pessoaMBean.buscarPessoas}" update="resultados" />
+					<br />
+
+					<p:dataTable id="resultados" var="pessoa"
+						value="#{pessoaMBean.buscaResultados}" rows="10">
+						<p:column headerText="Nome">
+							<h:outputText value="#{pessoa.nome}" />
+						</p:column>
+						<p:column headerText="Usuario">
+							<h:outputText value="#{pessoa.usuario}" />
+						</p:column>
+						<p:column>
+							<p:commandButton value="Deletar"
+								action="#{pessoaMBean.deletePessoa(pessoa)}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+
+			</p:panel>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+
+</html>

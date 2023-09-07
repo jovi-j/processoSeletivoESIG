@@ -43,7 +43,7 @@ public class PessoaSalarioDAO {
 		}
 	}
 
-	private PessoaSalario getExistingPessoaSalario(Pessoa pessoa) {
+	public PessoaSalario getExistingPessoaSalario(Pessoa pessoa) {
 		EntityManager em = EMUtil.getEntityManager();
 		String hql = "SELECT ps FROM PessoaSalario ps WHERE ps.pessoa = :pessoa";
 		TypedQuery<PessoaSalario> query = em.createQuery(hql, PessoaSalario.class);
@@ -76,4 +76,17 @@ public class PessoaSalarioDAO {
 		em.close();
 		return psList;
 	}
+	
+	public void deletePessoaSalario(PessoaSalario pessoaSalario) {
+        EntityManager em = EMUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            PessoaSalario ps = em.merge(pessoaSalario);
+            em.remove(ps);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+    }
+
 }

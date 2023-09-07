@@ -33,15 +33,13 @@ public class CargoDAO {
 		return salario;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Cargo> buscarTodosCargos() {
 		EntityManager em = EMUtil.getEntityManager();
 		List<Cargo> cargos = null;
 		try {
-			Query cQuery = em.createQuery("from Cargo c");
+			TypedQuery<Cargo> cQuery = em.createQuery("from Cargo c", Cargo.class);
 			cargos = cQuery.getResultList();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		finally {
