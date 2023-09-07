@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 import br.com.esig.dao.CargoDAO;
@@ -15,16 +15,26 @@ import br.com.esig.model.Pessoa;
 import br.com.esig.util.FacesUtil;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class PessoaMBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Pessoa pessoa;
+	private List<Pessoa> pessoas;
+	private List<Pessoa> pessoasFiltradas;
 	private List<Cargo> cargos;
 	
 	public PessoaMBean() {
-		this.pessoa = new Pessoa();
 		CargoDAO cDAO = new CargoDAO();
+		PessoaDAO pDAO = new PessoaDAO();
+		this.pessoa = new Pessoa();
 		this.setCargos(cDAO.buscarTodosCargos());
+		this.setPessoas(pDAO.buscarTodasPessoas());
+	}
+	
+	
+	public void buscarTodasPessoas() {
+		PessoaDAO pDAO = new PessoaDAO();
+		this.pessoas = pDAO.buscarTodasPessoas();
 	}
 	
 	public String salvarPessoa() {
@@ -33,7 +43,8 @@ public class PessoaMBean implements Serializable {
 	    this.pessoa = new Pessoa();
 	    FacesUtil.enviarMensagem("Sucesso", "Pessoa salva com sucesso!", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
 	    return "listaDeSalarios";	
-	   }
+	}
+	
 
 	public Pessoa getPessoa() {
 		return pessoa;
@@ -49,6 +60,26 @@ public class PessoaMBean implements Serializable {
 
 	public void setCargos(List<Cargo> cargos) {
 		this.cargos = cargos;
+	}
+
+
+	public List<Pessoa> getPessoas() {
+		return pessoas;
+	}
+
+
+	public void setPessoas(List<Pessoa> pessoas) {
+		this.pessoas = pessoas;
+	}
+
+
+	public List<Pessoa> getPessoasFiltradas() {
+		return pessoasFiltradas;
+	}
+
+
+	public void setPessoasFiltradas(List<Pessoa> pessoasFiltradas) {
+		this.pessoasFiltradas = pessoasFiltradas;
 	}
 	
 	

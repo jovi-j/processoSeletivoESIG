@@ -1,7 +1,5 @@
 package br.com.esig.controller;
-import br.com.esig.dao.PessoaDAO;
 import br.com.esig.dao.PessoaSalarioDAO;
-import br.com.esig.model.Pessoa;
 import br.com.esig.model.PessoaSalario;
 import br.com.esig.util.FacesUtil;
 
@@ -10,7 +8,6 @@ import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
@@ -39,72 +36,12 @@ public class SalariosMBean implements Serializable{
 		return null;
 	}
 	
-//	public String adicionarPessoa(){
-//		em.getTransaction().begin();
-//		this.pessoa = em.merge(this.pessoa);
-//		em.persist(this.pessoa);
-//		em.getTransaction().commit();
-//		this.pessoa = new Pessoa();
-//		buscarTodasAsPessoas();
-//		return "listaDeTarefas";
-//	}
-//
-//	public String modificarPessoa() {
-//		String id = getParam("id");
-//		this.pessoa = em.find(Pessoa.class, Long.parseLong(id));
-//		return "index";
-//	}
-
-//	public void concluirTarefa() {
-//		String pid = getParam("id");
-//		this.pessoa = em.find(Pessoa.class, Long.parseLong(pid));
-//		if(this.pessoa.getStatus()) {
-//			enviarMensagem("A tarefa já foi concluida", "A tarefa já está concluida.", FacesMessage.SEVERITY_INFO);
-//			this.pessoa = new Tarefa();
-//			return;
-//		}
-//		this.pessoa.setStatus(true);
-//		enviarMensagem("Tarefa concluida.", "Tarefa modificada com sucesso.", FacesMessage.SEVERITY_INFO);
-//		adicionarTarefa();
-//	}
-
-//	public String removerPessoa(){
-//		String pid = getParam("id");
-//		this.pessoa = em.find(Pessoa.class, Long.parseLong(pid));
-//		em.getTransaction().begin();
-//		pessoa = em.merge(pessoa);
-//		em.remove(pessoa);
-//		em.getTransaction().commit();
-//		this.pessoa = new Pessoa();
-//		buscarTodasAsPessoas();
-//		return "listaDeTarefas";
-//	}
-
-//	public String buscarTarefas(){
-//		// Se for, realizar uma busca única por id
-//		if(this.id != null){
-//			Pessoa p = em.find(Pessoa.class, this.id);
-//			if(p == null) {	
-//				enviarMensagem("Nenhum Resultado", "Id não existe no banco de dados.", FacesMessage.SEVERITY_ERROR);
-//				setPessoas(new ArrayList<Pessoa>());
-//			}else {
-//				setPessoas(new ArrayList<Pessoa>());
-//				pessoas.add(p);
-//			}
-//		} else if(this.pessoas.isEmpty()) {	
-//			enviarMensagem("Nenhum Resultado", "A busca não retornou resultados", FacesMessage.SEVERITY_ERROR);
-//		} 
-//		return "listaDeTarefas";
-//	}
 
 	public void buscarTodosOsSalarios(){
 		PessoaSalarioDAO psDAO = new PessoaSalarioDAO();
 		this.pessoasSalarios = psDAO.buscarTodasPessoasSalario();
 	}
 	
-	// Função simples para pegar um único parâmetro vindo da requisição
-	
-
 
 	public Long getId() {
 		return id;

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3c.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:body>
+
+	<ui:composition template="/ui/layout.xhtml">
+
+		<ui:define name="content">
+
+			<p:growl id="messageOutput" showDetail="true" />
+			<p:panel header="Listagem de Pessoas"
+				style="text-align: center; font-size: 13px">
+				<h:form id="pessoasForm">
+					<p:dataTable value="#{pessoaMBean.pessoas}" var="p" rows="15"
+						stripedRows="true" paginator="true" paginatorPosition="bottom"
+						liveResize="true" draggableColumns="true" resizableColumns="true"
+						emptyMessage="Não há pessoas cadastradas."
+						filteredValue="#{pessoaMBean.pessoasFiltradas}"
+						widgetVar="pessoasTable"
+						style="font-size: 15px">
+
+						<p:column filterBy="#{p.nome}" headerText="Nome"
+							style="text-align: center" filterMatchMode="contains">
+							<h:outputText value="#{p.nome}" />
+						</p:column>
+
+						<p:column filterBy="#{p.cidade}" headerText="Cidade"
+							style="text-align: center" filterMatchMode="contains">
+							<h:outputText value="#{p.cidade}" />
+						</p:column>
+
+						<p:column filterBy="#{p.email}" headerText="Email"
+							style="text-align: center" filterMatchMode="contains">
+							<h:outputText value="#{p.email}" />
+						</p:column>
+
+						<p:column filterBy="#{p.cep}" headerText="CEP"
+							style="text-align: center" filterMatchMode="contains">
+							<h:outputText value="#{p.cep}" />
+						</p:column>
+
+						<p:column filterBy="#{p.endereco}" headerText="Endereço"
+							style="text-align: center" filterMatchMode="contains">
+							<h:outputText value="#{p.endereco}" />
+						</p:column>
+
+						<p:column filterBy="#{p.pais}" headerText="País"
+							style="text-align: center" filterMatchMode="contains">
+							<h:outputText value="#{p.pais}" />
+						</p:column>
+
+						<p:column filterBy="#{p.usuario}" headerText="Usuário"
+							style="text-align: center" filterMatchMode="contains">
+							<h:outputText value="#{p.usuario}" />
+						</p:column>
+
+						<p:column filterBy="#{p.telefone}" headerText="Telefone"
+							style="text-align: center" filterMatchMode="contains">
+							<h:outputText value="#{p.telefone}" />
+						</p:column>
+
+						<p:column headerText="Data de Nascimento"
+							style="text-align: center">
+							<h:outputText value="#{p.dataNascimento}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</p:column>
+
+						<p:column filterBy="#{p.cargo.id}" headerText="Cargo"
+							filterMatchMode="in">
+							<f:facet name="filter">
+								<p:selectCheckboxMenu label="Cargos"
+									onchange="PF('pessoasTable').filter()" scrollHeight="150"
+									styleClass="custom-filter">
+									<f:selectItems itemLabel="#{c.nome}" itemValue="#{c.id}" value="#{pessoaMBean.cargos}" var="c" />
+								</p:selectCheckboxMenu>
+							</f:facet>
+							<h:outputText value="#{p.cargo.nome}" />
+						</p:column>
+
+					</p:dataTable>
+					</h:form>
+			</p:panel>
+		</ui:define>
+	</ui:composition>
+
+</h:body>
+
+</html>
