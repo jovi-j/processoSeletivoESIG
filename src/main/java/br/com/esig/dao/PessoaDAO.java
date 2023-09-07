@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import br.com.esig.model.Pessoa;
+import br.com.esig.model.PessoaSalario;
 import br.com.esig.util.EMUtil;
 
 public class PessoaDAO {
@@ -69,16 +70,44 @@ public class PessoaDAO {
 			em.close();
 		}
 	}
-
-	public void deletarPessoa(Pessoa pessoa) {
+	
+	
+	public List<Pessoa> buscaPessoasPorNomeOuUsuario(String texto) {
 		EntityManager em = EMUtil.getEntityManager();
+		em.getTransaction().begin();
+		List<Pessoa> resultados = null;
 		try {
-			em.getTransaction().begin();
-			Pessoa mergedPessoa = em.merge(pessoa);
-			em.remove(mergedPessoa);
+			String hql = "SELECT p FROM Pessoa p WHERE p.nome LIKE :texto OR p.usuario LIKE :texto";
+			TypedQuery<Pessoa> query = em.createQuery(hql, Pessoa.class);
+			query.setParameter("texto", "%" + texto + "%");
+
+			// Execute the query to get the search results
+			resultados = query.getResultList();
 			em.getTransaction().commit();
 		} finally {
 			em.close();
 		}
+		return resultados;
+	}
+
+
+
+	public void deletarPessoa(Pessoa pessoa) {
+		 EntityManager em = EMUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            PessoaSalarioDAO pessoaSalarioDAO = new PessoaSalarioDAO();
+            PessoaSalario pessoaSalario = pessoaSalarioDAO.getExistingPessoaSalario(pessoa);
+
+            if (pessoaSalario != null) {
+                pessoaSalarioDAO.deletePessoaSalario(pessoaSalario);
+            }
+            Pessoa mergedPessoa = em.merge(pessoa);
+            em.remove(mergedPessoa);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
 	}
 }

@@ -21,6 +21,10 @@ public class PessoaMBean implements Serializable {
 	private Pessoa pessoa;
 	private List<Pessoa> pessoas;
 	private List<Pessoa> pessoasFiltradas;
+	
+	private String buscaNomeOuUsuario;
+    private List<Pessoa> buscaResultados;
+    
 	private List<Cargo> cargos;
 	
 	public PessoaMBean() {
@@ -44,6 +48,19 @@ public class PessoaMBean implements Serializable {
 	    FacesUtil.enviarMensagem("Sucesso", "Pessoa salva com sucesso!", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
 	    return "listaDeSalarios";	
 	}
+	
+	public void buscarPessoas() {
+		PessoaDAO pDAO = new PessoaDAO();
+		this.buscaResultados = pDAO.buscaPessoasPorNomeOuUsuario(buscaNomeOuUsuario);
+    }
+
+    public String deletePessoa(Pessoa pessoa) {
+		PessoaDAO pDAO = new PessoaDAO();
+		pDAO.deletarPessoa(pessoa);
+		buscaResultados.remove(pessoa);
+		FacesUtil.enviarMensagem("Deletar Pessoa", "Pessoa deletada com Sucesso!", FacesMessage.SEVERITY_INFO, FacesContext.getCurrentInstance());
+		return "deletarPessoas";
+    }
 	
 
 	public Pessoa getPessoa() {
@@ -81,6 +98,27 @@ public class PessoaMBean implements Serializable {
 	public void setPessoasFiltradas(List<Pessoa> pessoasFiltradas) {
 		this.pessoasFiltradas = pessoasFiltradas;
 	}
+
+
+	public String getBuscaNomeOuUsuario() {
+		return buscaNomeOuUsuario;
+	}
+
+
+	public void setBuscaNomeOuUsuario(String buscaNomeOuUsuario) {
+		this.buscaNomeOuUsuario = buscaNomeOuUsuario;
+	}
+
+
+	public List<Pessoa> getBuscaResultados() {
+		return buscaResultados;
+	}
+
+
+	public void setBuscaResultados(List<Pessoa> buscaResultados) {
+		this.buscaResultados = buscaResultados;
+	}
+	
 	
 	
 }
